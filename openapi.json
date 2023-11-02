@@ -1,0 +1,1340 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "TypeCombinator Global",
+    "version": "v1",
+    "x-codegen-settings": {
+      "GenerateExamplesForOptionalFields": true,
+      "EnableExperimentalTypeCombinatorGeneration": true
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:{port}/{subUrl}",
+      "variables": {
+        "port": {
+          "default": "3000"
+        },
+        "subUrl": {
+          "default": "multitype/global"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/primitive": {
+      "post": {
+        "tags": [
+          "Query"
+        ],
+        "summary": "SendPrimitive",
+        "description": "Send all Globally defined primitive TypeCombinators in query",
+        "operationId": "SendPrimitive",
+        "parameters": [
+          {
+            "name": "oneOfPrimitive",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "example": "2",
+            "schema": {
+              "$ref": "#/components/schemas/OneOfPrimitive"
+            }
+          },
+          {
+            "name": "anyOfPrimitive",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "example": "\"some string\"",
+            "schema": {
+              "$ref": "#/components/schemas/AnyOfPrimitive"
+            }
+          },
+          {
+            "name": "oneOfAndAnyOfPrimitive",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "example": "\"some other string\"",
+            "schema": {
+              "$ref": "#/components/schemas/OneOfAndAnyOfPrimitive"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnyOfPrimitive"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "POST",
+              "uri": "/primitive"
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "RAW",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": false,
+              "statusCode": "200",
+              "headers": {},
+              "body": "\"some string response\""
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "SendPrimitive"
+          }
+        ]
+      }
+    },
+    "/discriminator/allof": {
+      "post": {
+        "tags": [
+          "Form"
+        ],
+        "summary": "SendAllOfDiscriminated",
+        "description": "Send all Globally defined allOf discriminated TypeCombinators in form",
+        "operationId": "SendAllOfDiscriminated",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "oneOfCatDog-AllOfPetType",
+                  "oneOfCatDog-OafPetType",
+                  "oneOfCatDog-Kind"
+                ],
+                "properties": {
+                  "oneOfCatDog-AllOfPetType": {
+                    "$ref": "#/components/schemas/OneOfCatDogPetType-AllOf"
+                  },
+                  "oneOfCatDog-OafPetType": {
+                    "$ref": "#/components/schemas/OneOfCatDogPetType-Oaf"
+                  },
+                  "oneOfCatDog-Kind": {
+                    "$ref": "#/components/schemas/OneOfCatDogKind"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OneOfCatDogPetType-AllOf"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "POST",
+              "uri": "/discriminator/allof",
+              "headers": {
+                "Content-Type": "application/x-www-form-urlencoded"
+              },
+              "body": "oneOfCatDog-AllOfPetType=%7B%22name%22%3A%22hosico-cat%22%2C%22color%22%3A%22yellow%22%2C%22pet_type%22%3A%22Cat%22%7D&oneOfCatDog-OafPetType=%7B%22name%22%3A%22mosco-cat%22%2C%22color%22%3A%22yellow%22%2C%22pet_type%22%3A%22Kitty%22%7D&oneOfCatDog-Kind=%7B%22name%22%3A%22hosico-dog%22%2C%22fangs%22%3A%22yes%22%2C%22pet_type%22%3A%22Cat%22%2C%22One%20Of%20kind%22%3A%22large%22%7D"
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "KEYSANDVALUES",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": false,
+              "statusCode": "200",
+              "headers": {},
+              "body": "{\"name\":\"hosico-dog\",\"fangs\":\"yes\",\"pet_type\":\"Dog\"}"
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "SendAllOfDiscriminated",
+            "x-testDescription": "Send all Globally defined allOf discriminated TypeCombinators in form"
+          }
+        ]
+      }
+    },
+    "/discriminator/oaf": {
+      "post": {
+        "tags": [
+          "Form"
+        ],
+        "summary": "SendOafDiscriminated",
+        "description": "Send all Globally defined oneOf and anyOf TypeCombinators in form",
+        "operationId": "SendOafDiscriminated",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "oneOfLionAndDear",
+                  "oneOfLionAndDear2",
+                  "oneOfDearAndOneOfLionSquirrel",
+                  "oneOfLionAndSquirrelSpeed",
+                  "oneOfLionAndSquirrelArea"
+                ],
+                "properties": {
+                  "oneOfLionAndDear": {
+                    "$ref": "#/components/schemas/OneOfLionDeerType"
+                  },
+                  "oneOfLionAndDear2": {
+                    "$ref": "#/components/schemas/OneOfLionDeerType2"
+                  },
+                  "oneOfDearAndOneOfLionSquirrel": {
+                    "$ref": "#/components/schemas/OneOfDeerAndOneOfLionSquirrel"
+                  },
+                  "oneOfLionAndSquirrelSpeed": {
+                    "$ref": "#/components/schemas/one of lion squirrel speed kind"
+                  },
+                  "oneOfLionAndSquirrelArea": {
+                    "$ref": "#/components/schemas/OneOfLionSquirrelAreaKind"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/one of lion squirrel speed kind"
+                    },
+                    {
+                      "$ref": "#/components/schemas/OneOfLionSquirrelAreaKind"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "POST",
+              "uri": "/discriminator/oaf",
+              "headers": {
+                "Content-Type": "application/x-www-form-urlencoded"
+              },
+              "body": "oneOfLionAndDear=%7B%22name%22%3A%22deer-21%22%2C%22weight%22%3A%2230%20kg%22%2C%22type%22%3A%22Hunted%22%7D&oneOfLionAndDear2=%7B%22id%22%3A%2223%22%2C%22weight%22%3A%22100%20kg%22%2C%22type%22%3A%22h%24u%5C%5Cn%28%5Ct%2Ce%29%2Cr%22%7D&oneOfDearAndOneOfLionSquirrel=%7B%22name%22%3A%22deer-23%22%2C%22weight%22%3A%2230%20kg%22%2C%22type%22%3A%22hunter%22%2C%22kind%22%3A%22%7Bfa%7B%7Dst%7D%22%7D&oneOfLionAndSquirrelSpeed=%7B%22id%22%3A%2223%22%2C%22weight%22%3A%22100%20kg%22%2C%22type%22%3A%22hunter%22%2C%22kind%22%3A%22%7Bfa%7B%7Dst%7D%22%7D&oneOfLionAndSquirrelArea=%7B%22id%22%3A%2223%22%2C%22size%22%3A%22very%20small%22%2C%22type%22%3A%22agile%22%2C%22kind%22%3A%22westener%22%7D"
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "KEYSANDVALUES",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": false,
+              "statusCode": "200",
+              "headers": {},
+              "body": "{\"id\":\"23\",\"weight\":\"100 kg\",\"type\":\"hunter\",\"kind\":\"northener\"}"
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "SendOafDiscriminated",
+            "x-testDescription": "Send all Globally defined oneOf and anyOf TypeCombinators in form"
+          }
+        ]
+      }
+    },
+    "/alias": {
+      "post": {
+        "tags": [
+          "Form"
+        ],
+        "summary": "SendAlias",
+        "description": "Send all Globally defined TypeCombinators Aliases in form",
+        "operationId": "SendAlias",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "alias",
+                  "aliasOfAlias"
+                ],
+                "properties": {
+                  "alias": {
+                    "$ref": "#/components/schemas/LionVsDeer"
+                  },
+                  "aliasOfAlias": {
+                    "$ref": "#/components/schemas/HunterVsHunted"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LionVsDeer"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "POST",
+              "uri": "/alias",
+              "headers": {
+                "Content-Type": "application/x-www-form-urlencoded"
+              },
+              "body": "alias=%7B%22name%22%3A%22deer-21%22%2C%22weight%22%3A%2230%20kg%22%2C%22type%22%3A%22Hunted%22%7D&aliasOfAlias=%7B%22id%22%3A%2223%22%2C%22weight%22%3A%22100%20kg%22%2C%22type%22%3A%22hunter%22%7D"
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "KEYSANDVALUES",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": false,
+              "statusCode": "200",
+              "headers": {},
+              "body": "{\"name\":\"deer-21\",\"weight\":\"30 kg\",\"type\":\"Hunted\"}"
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "SendAlias",
+            "x-testDescription": "Send all Globally defined TypeCombinators Aliases in form"
+          }
+        ]
+      }
+    },
+    "/discriminator/oneof-with-allof": {
+      "post": {
+        "tags": [
+          "Form"
+        ],
+        "summary": "SendOafWithAllOfDiscriminatedVariants",
+        "description": "Send all Globally defined oneOf and anyOf TypeCombinators in form",
+        "operationId": "SendOafWithAllOfDiscriminatedVariants",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "oneOfAnimalLionDiscKind",
+                  "oneOfCatLionDiscKind",
+                  "oneOfAnimalLion",
+                  "oneOfCatLion",
+                  "oneOfCatDogAndLionDeer",
+                  "oneOfEmployeeEntrepreneurDisc",
+                  "oneOfEmployeeEntrepreneur"
+                ],
+                "properties": {
+                  "oneOfAnimalLionDiscKind": {
+                    "$ref": "#/components/schemas/OneOf-With-Discriminator-For-Animal-Lion-Kind"
+                  },
+                  "oneOfCatLionDiscKind": {
+                    "$ref": "#/components/schemas/OneOf-With-Discriminator-For-Cat-Lion-Kind"
+                  },
+                  "oneOfAnimalLion": {
+                    "$ref": "#/components/schemas/OneOf-Without-Discriminator-For-Animal-Lion"
+                  },
+                  "oneOfCatLion": {
+                    "$ref": "#/components/schemas/OneOf-Without-Discriminator-For-Cat-Lion-Kind"
+                  },
+                  "oneOfCatDogAndLionDeer": {
+                    "$ref": "#/components/schemas/Nested-OneOf-For-Animal-And-OneOfLionSquirrel"
+                  },
+                  "oneOfEmployeeEntrepreneurDisc": {
+                    "$ref": "#/components/schemas/OneOf-With-Discriminator-Employee-Entrepreneur"
+                  },
+                  "oneOfEmployeeEntrepreneur": {
+                    "$ref": "#/components/schemas/OneOf-Without-Discriminator-Employee-Entrepreneur"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/OneOf-With-Discriminator-For-Animal-Lion-Kind"
+                    },
+                    {
+                      "$ref": "#/components/schemas/OneOf-With-Discriminator-For-Cat-Lion-Kind"
+                    },
+                    {
+                      "$ref": "#/components/schemas/OneOf-Without-Discriminator-For-Animal-Lion"
+                    },
+                    {
+                      "$ref": "#/components/schemas/OneOf-Without-Discriminator-For-Cat-Lion-Kind"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Nested-OneOf-For-Animal-And-OneOfLionSquirrel"
+                    },
+                    {
+                      "$ref": "#/components/schemas/OneOf-With-Discriminator-Employee-Entrepreneur"
+                    },
+                    {
+                      "$ref": "#/components/schemas/OneOf-Without-Discriminator-Employee-Entrepreneur"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": []
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "OneOfPrimitive": {
+        "example": 2,
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "description": "OneOf with primitive types and metadata.",
+        "x-oneof-cases-meta": [
+          {
+            "name": "Sender name",
+            "description": "Name of sender."
+          },
+          {
+            "name": "Message id",
+            "description": ""
+          }
+        ]
+      },
+      "AnyOfPrimitive": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "description": "AnyOf with primitive types and metadata.",
+        "example": "2",
+        "x-anyof-cases-meta": [
+          {
+            "name": "Sender name",
+            "description": "Name of sender."
+          },
+          {
+            "name": "Message id",
+            "description": ""
+          }
+        ]
+      },
+      "OneOfAndAnyOfPrimitive": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/AnyOfPrimitive"
+          },
+          {
+            "type": "boolean"
+          }
+        ],
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/OneOfPrimitive"
+          },
+          {
+            "type": "boolean"
+          }
+        ],
+        "description": "OneOf and AnyOf cases at the same level and also at inner levels with primitive types and metadata.",
+        "x-anyof-cases-meta": [
+          {
+            "name": "String or Number",
+            "description": ""
+          },
+          {
+            "name": "Boolean",
+            "description": ""
+          }
+        ],
+        "x-oneof-cases-meta": [
+          {
+            "name": "String or Number",
+            "description": ""
+          },
+          {
+            "name": "My Boolean",
+            "description": ""
+          }
+        ],
+        "example": true
+      },
+      "Animal": {
+        "title": "Animal",
+        "required": [
+          "pet_type"
+        ],
+        "type": "object",
+        "properties": {
+          "pet_type": {
+            "type": "string"
+          },
+          "id": {
+            "$ref": "#/components/schemas/AnyOfPrimitive"
+          },
+          "friend": {
+            "$ref": "#/components/schemas/HunterVsHunted"
+          },
+          "enemy": {
+            "$ref": "#/components/schemas/OneOfLionSquirrelAreaKind"
+          }
+        },
+        "discriminator": {
+          "propertyName": "pet_type",
+          "mapping": {
+            "Cat": "Cat",
+            "Dog": "Dog"
+          }
+        }
+      },
+      "Cat": {
+        "title": "Cat",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Animal"
+          },
+          {
+            "required": [
+              "name",
+              "color"
+            ],
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "color": {
+                "type": "string"
+              }
+            },
+            "example": {
+              "name": "hosico",
+              "color": "yellow",
+              "pet_type": "Cat"
+            }
+          }
+        ],
+        "examples": [
+          {
+            "name": "my cat",
+            "color": "yellow white",
+            "pet_type": "Cat"
+          },
+          {
+            "name": "their cat",
+            "color": "yellow red",
+            "pet_type": "Cat"
+          },
+          {
+            "name": "your cat",
+            "color": "yellow blue",
+            "pet_type": "Cat"
+          },
+          {
+            "name": "our cat",
+            "color": "yellow green",
+            "pet_type": "Cat"
+          }
+        ]
+      },
+      "Dog": {
+        "title": "Dog",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Animal"
+          },
+          {
+            "required": [
+              "name",
+              "fangs"
+            ],
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "fangs": {
+                "type": "string"
+              }
+            },
+            "example": {
+              "name": "puppy",
+              "fangs": "yes",
+              "pet_type": "Dog"
+            }
+          }
+        ],
+        "example": {
+          "name": "puppy",
+          "fangs": "yes",
+          "pet_type": "Dog"
+        }
+      },
+      "Person": {
+        "title": "Person",
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "discriminator": {
+          "propertyName": "type",
+          "mapping": {
+            "Empl": "Employee",
+            "Entr": "Entrepreneur"
+          }
+        }
+      },
+      "Employee": {
+        "title": "Employee",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Person"
+          },
+          {
+            "required": [
+              "ssn"
+            ],
+            "type": "object",
+            "properties": {
+              "ssn": {
+                "type": "number"
+              },
+              "salary": {
+                "type": "number"
+              }
+            },
+            "example": {
+              "ssn": 123,
+              "salary": 25000
+            },
+            "discriminator": {
+              "propertyName": "type",
+              "mapping": {
+                "Product Manager": "ProductManager",
+                "Software Developer": "SoftwareDeveloper"
+              }
+            }
+          }
+        ],
+        "example": {
+          "ssn": 123,
+          "name": "John",
+          "type": "Empl"
+        }
+      },
+      "Entrepreneur": {
+        "title": "Entrepreneur",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Person"
+          },
+          {
+            "required": [
+              "number_of_startups"
+            ],
+            "type": "object",
+            "properties": {
+              "number_of_startups": {
+                "type": "number"
+              }
+            },
+            "example": {
+              "number_of_startups": 5
+            }
+          }
+        ],
+        "example": {
+          "name": "Bob",
+          "number_of_startups": 5,
+          "type": "Entr"
+        }
+      },
+      "ProductManager": {
+        "title": "ProductManager",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Employee"
+          },
+          {
+            "required": [
+              "number_of_reportees"
+            ],
+            "type": "object",
+            "properties": {
+              "number_of_reportees": {
+                "type": "number"
+              }
+            },
+            "example": {
+              "number_of_reportees": 20
+            }
+          }
+        ],
+        "example": {
+          "ssn": 123,
+          "name": "John",
+          "salary": 25000,
+          "number_of_reportees": 10,
+          "type": "Product Manager"
+        }
+      },
+      "SoftwareDeveloper": {
+        "title": "SoftwareDeveloper",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Employee"
+          },
+          {
+            "required": [
+              "number_of_reportees"
+            ],
+            "type": "object",
+            "properties": {
+              "boss_name": {
+                "type": "string"
+              },
+              "languages": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "example": {
+              "boss_name": "John",
+              "languages": [ "Java", "Python" ]
+            }
+          }
+        ],
+        "example": {
+          "ssn": 123,
+          "name": "John",
+          "salary": 25000,
+          "boss_name": "John",
+          "languages": [ "Java", "Python" ],
+          "type": "Software Developer"
+        }
+      },
+      "OneOfCatDogPetType-AllOf": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/Cat"
+          },
+          {
+            "$ref": "#/components/schemas/Dog"
+          }
+        ],
+        "description": "OneOf (Cat, Dog) with \"pet_type\" discriminator without mapping",
+        "discriminator": {
+          "propertyName": "pet_type"
+        },
+        "example": {
+          "name": "hosico",
+          "color": "yellow",
+          "pet_type": "Cat"
+        },
+        "examples": [
+          {
+            "name": "walizo",
+            "color": "Brown and White",
+            "pet_type": "Cat"
+          },
+          {
+            "name": "tomy",
+            "fangs": "yes",
+            "pet_type": "Dog"
+          },
+          {
+            "name": "grudgy",
+            "fangs": "no",
+            "pet_type": "Dog"
+          }
+        ],
+        "x-oneof-cases-meta": [
+          {
+            "name": "Cat",
+            "description": "This is a \r\ncatttt"
+          },
+          {
+            "name": "Dog",
+            "description": "This is a \r\ndoggg"
+          }
+        ]
+      },
+      "OneOfCatDogPetType-Oaf": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/Cat"
+          },
+          {
+            "$ref": "#/components/schemas/Dog"
+          }
+        ],
+        "description": "OneOf (Cat, Dog) with \"pet_type\" discriminator same as allOf with different mapping",
+        "discriminator": {
+          "propertyName": "pet_type",
+          "mapping": {
+            "Kitty": "Cat",
+            "Doggy": "Dog"
+          }
+        },
+        "example": {
+          "name": "hosico",
+          "color": "yellow",
+          "pet_type": "Cat"
+        },
+        "x-oneof-cases-meta": [
+          {
+            "name": "Cat",
+            "description": "This is a \r\ncatttt"
+          },
+          {
+            "name": "Dog",
+            "description": "This is a \r\ndoggg"
+          }
+        ]
+      },
+      "OneOfCatDogKind": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/Cat"
+          },
+          {
+            "$ref": "#/components/schemas/Dog"
+          }
+        ],
+        "description": "OneOf (Cat, Dog) with an additional \"kind\" discriminator with mapping (small:Cat, large:Dog)",
+        "discriminator": {
+          "propertyName": "One Of kind",
+          "mapping": {
+            "small": "Cat",
+            "large": "Dog"
+          }
+        },
+        "example": {
+          "name": "hosico",
+          "color": "yellow",
+          "pet_type": "Cat",
+          "One Of kind": "small"
+        },
+        "x-oneof-cases-meta": [
+          {
+            "name": "Cat",
+            "description": "This is a \r\ncatttt"
+          },
+          {
+            "name": "Dog",
+            "description": "This is a \r\ndoggg"
+          }
+        ]
+      },
+      "Lion": {
+        "title": "Lion",
+        "required": [
+          "id",
+          "weight",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "weight": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        }
+      },
+      "Deer": {
+        "title": "Deer",
+        "required": [
+          "name",
+          "weight",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "weight": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        }
+      },
+      "Squirrel": {
+        "title": "Squirrel",
+        "required": [
+          "id",
+          "size",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "size": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        }
+      },
+      "OneOfLionDeerType": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/Lion"
+          },
+          {
+            "$ref": "#/components/schemas/Deer"
+          }
+        ],
+        "description": "OneOf (Lion, Deer) with \"type\" discriminator of mapping (hunter:Lion, Hunted:Deer)",
+        "discriminator": {
+          "propertyName": "type",
+          "mapping": {
+            "hunter": "Lion",
+            "Hunted": "Deer"
+          }
+        },
+        "example": {
+          "id": "23",
+          "weight": "100 kg",
+          "type": "hunter"
+        },
+        "x-oneof-cases-meta": [
+          {
+            "description": "It hunts."
+          },
+          {
+            "description": "It is hunted"
+          }
+        ]
+      },
+      "OneOfLionDeerType2": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/Lion"
+          },
+          {
+            "$ref": "#/components/schemas/Deer"
+          }
+        ],
+        "description": "OneOf (Lion, Deer) with \"type\" discriminator of mapping (h$u\\n(\t,e),r:Lion, hunted:Deer)",
+        "discriminator": {
+          "propertyName": "type",
+          "mapping": {
+            "h$u\\n(\t,e),r": "Lion",
+            "hunted": "Deer"
+          }
+        },
+        "example": {
+          "id": "23",
+          "weight": "100 kg",
+          "type": "h$u\\n(\t,e),r"
+        },
+        "x-oneof-cases-meta": [
+          {
+            "description": "It hunts."
+          },
+          {
+            "description": "It is hunted"
+          }
+        ]
+      },
+      "OneOf-With-Discriminator-Employee-Entrepreneur": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/Employee"
+          },
+          {
+            "$ref": "#/components/schemas/Entrepreneur"
+          }
+        ],
+        "description": "OneOf (Employee, Entrepreneur) with \"build\" discriminator of mapping (Endomorphs:Employee, Mesomorphs:Entrepreneur)",
+        "discriminator": {
+          "propertyName": "build",
+          "mapping": {
+            "Endomorphs": "Employee",
+            "Mesomorphs": "Entrepreneur"
+          }
+        },
+        "example": {
+          "ssn": 123,
+          "name": "John",
+          "type": "Empl",
+          "build": "Endomorphs"
+        },
+        "x-oneof-cases-meta": [
+          {
+            "description": "This represents an employee."
+          },
+          {
+            "description": "This represents an entrepreneur."
+          }
+        ]
+      },
+      "OneOf-Without-Discriminator-Employee-Entrepreneur": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/Employee"
+          },
+          {
+            "$ref": "#/components/schemas/Entrepreneur"
+          }
+        ],
+        "description": "OneOf (Employee, Entrepreneur) without discriminator mapping.",
+        "example": {
+          "ssn": 123,
+          "name": "John",
+          "type": "Empl",
+          "build": "Endomorphs"
+        },
+        "x-oneof-cases-meta": [
+          {
+            "description": "This represents an employee."
+          },
+          {
+            "description": "This represents an entrepreneur."
+          }
+        ]
+      },
+      "OneOf-With-Discriminator-For-Animal-Lion-Kind": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/Animal"
+          },
+          {
+            "$ref": "#/components/schemas/Lion"
+          }
+        ],
+        "description": "OneOf (Animal, Lion) with \"kind\" discriminator of mapping (wild:Lion, pet:Animal)",
+        "discriminator": {
+          "propertyName": "kind",
+          "mapping": {
+            "wild": "Lion",
+            "pet": "Animal"
+          }
+        },
+        "example": {
+          "id": "23",
+          "weight": "100 kg",
+          "type": "hunter",
+          "kind": "wild"
+        },
+        "x-oneof-cases-meta": [
+          {
+            "description": "It is a pet."
+          },
+          {
+            "description": "It is not a pet."
+          }
+        ]
+      },
+      "OneOf-With-Discriminator-For-Cat-Lion-Kind": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/Cat"
+          },
+          {
+            "$ref": "#/components/schemas/Lion"
+          }
+        ],
+        "description": "OneOf (Animal, Lion) with \"kind\" discriminator of mapping (wild:Lion, pet:Cat)",
+        "discriminator": {
+          "propertyName": "kind",
+          "mapping": {
+            "wild": "Lion",
+            "pet": "Cat"
+          }
+        },
+        "example": {
+          "id": "23",
+          "weight": "100 kg",
+          "type": "hunter",
+          "kind": "wild"
+        },
+        "x-oneof-cases-meta": [
+          {
+            "description": "It is a pet."
+          },
+          {
+            "description": "It is not a pet."
+          }
+        ]
+      },
+      "OneOf-Without-Discriminator-For-Animal-Lion": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/Animal"
+          },
+          {
+            "$ref": "#/components/schemas/Lion"
+          }
+        ],
+        "description": "OneOf (Animal, Lion) without discriminator. Here AllOf discriminator is implicitly applied through Animal.",
+        "example": {
+          "id": "23",
+          "weight": "100 kg",
+          "type": "hunter"
+        },
+        "x-oneof-cases-meta": [
+          {
+            "description": "It is a pet."
+          },
+          {
+            "description": "It is not a pet."
+          }
+        ]
+      },
+      "OneOf-Without-Discriminator-For-Cat-Lion-Kind": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/Cat"
+          },
+          {
+            "$ref": "#/components/schemas/Lion"
+          }
+        ],
+        "description": "OneOf (Cat, Lion) without discriminator.",
+        "example": {
+          "name": "hosico",
+          "color": "yellow",
+          "pet_type": "catty"
+        },
+        "x-oneof-cases-meta": [
+          {
+            "description": "It is a pet."
+          },
+          {
+            "description": "It is not a pet."
+          }
+        ]
+      },
+      "Nested-OneOf-For-Animal-And-OneOfLionSquirrel": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/Animal"
+          },
+          {
+            "$ref": "#/components/schemas/one of lion squirrel speed kind"
+          }
+        ],
+        "description": "OneOf (Animal, OneOfDeerAndOneOfLionSquirrel) without discriminator.",
+        "example": {
+          "id": "23",
+          "weight": "100 kg",
+          "type": "hunter"
+        }
+      },
+      "OneOfDeerAndOneOfLionSquirrel": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/Deer"
+          },
+          {
+            "$ref": "#/components/schemas/one of lion squirrel speed kind"
+          }
+        ],
+        "description": "Multi level OneOf (Deer, OneOf (Lion, Squirrel))",
+        "example": {
+          "id": "23",
+          "weight": "100 kg",
+          "type": "hunter",
+          "kind": "northener"
+        },
+        "x-oneof-cases-meta": [
+          {
+            "description": "It is hunted"
+          },
+          {
+            "description": "This is another group oneof"
+          }
+        ]
+      },
+      "OneOfLionSquirrelAreaKind": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/Lion"
+          },
+          {
+            "$ref": "#/components/schemas/Squirrel"
+          }
+        ],
+        "description": "OneOf (Lion, Squirrel) with an additional \"kind\" property discriminator of mapping (northener:Lion, westener:Squirrel)",
+        "discriminator": {
+          "propertyName": "kind",
+          "mapping": {
+            "northener": "Lion",
+            "westener": "Squirrel"
+          }
+        },
+        "example": {
+          "id": "23",
+          "weight": "100 kg",
+          "type": "hunter",
+          "kind": "northener"
+        },
+        "x-oneof-cases-meta": [
+          {
+            "description": "Lion hunts."
+          },
+          {
+            "description": "Squirrel is hunted"
+          }
+        ]
+      },
+      "one of lion squirrel speed kind": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/Lion"
+          },
+          {
+            "$ref": "#/components/schemas/Squirrel"
+          }
+        ],
+        "description": "OneOf (Lion, Squirrel) with an additional \"kind\" property discriminator of mapping (fast:Lion, faster:Squirrel)",
+        "discriminator": {
+          "propertyName": "kind",
+          "mapping": {
+            "{fa{}st}": "Lion",
+            "{fas{}ter}": "Squirrel"
+          }
+        },
+        "example": {
+          "id": "23",
+          "weight": "100 kg",
+          "type": "hunter",
+          "kind": "{fa{}st}"
+        },
+        "x-oneof-cases-meta": [
+          {
+            "description": "Lion hunts."
+          },
+          {
+            "description": "Squirrel is hunted"
+          }
+        ]
+      },
+      "LionVsDeer": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/OneOfLionDeerType"
+          }
+        ],
+        "description": "allOf (OneOfLionDeerType) and its an alias of OneOfLionDeerType",
+        "example": {
+          "name": "deer21",
+          "weight": "30 kg",
+          "type": "Hunted"
+        }
+      },
+      "HunterVsHunted": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LionVsDeer"
+          }
+        ],
+        "description": "allOf (LionVsDeer) and its an alias of LionVsDeer",
+        "example": {
+          "name": "deer22",
+          "weight": "20 kg",
+          "type": "Hunted"
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Query",
+      "description": "This controller contains the usage of globally defined type combinators in query"
+    },
+    {
+      "name": "Form",
+      "description": "This controller contains the usage of globally defined type combinators in form"
+    }
+  ]
+}
